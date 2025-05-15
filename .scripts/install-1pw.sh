@@ -13,7 +13,7 @@ else
         sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22 && \
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
         sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg && \
-        sudo apt update && sudo apt install 1password-cli
+        sudo apt update && sudo apt install 1password-cli 1password
 fi
 eval $(op signin) || exit 1
 echo "OP Installed and Authenticated"
