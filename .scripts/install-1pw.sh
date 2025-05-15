@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
 if command -v "op" &> /dev/null; then
-    op whoami
-    if [ $? -ne 0 ]; then
-        echo "Need to Auth to OP"
-        eval $(op signin)
-    fi
+    echo "1password cli already installed"
 else
     curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
         sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg && \
@@ -18,8 +14,8 @@ else
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
         sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg && \
         sudo apt update && sudo apt install 1password-cli
-    eval $(op signin) || exit 1
 fi
+eval $(op signin) || exit 1
 echo "OP Installed and Authenticated"
 op document get --vault linux-kernel "gpg.key" -o gpg.key
 op document get --vault linux-kernel "gpg.pub" -o gpg.pub
