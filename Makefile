@@ -1,23 +1,23 @@
 .PHONY = all clean build test
 UNAME_R = $(shell uname -r)
 KERNEL_VERSION = $(if $(UNAME_R), $(UNAME_R), 6.11.0-25-generic)
-obj-m += helloworld.o
 
-all:
-	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
+all: init clean
 
 clean:
 	@echo "cleaning"
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
+init:
+	@pip install in-toto --break-system-packages
+	@.scripts/install-1pw.sh
+	@.scripts/install-docker.sh
+	@op document get --vault linux-kernel "gpg.key" -o gpg.key
+	@op document get --vault linux-kernel "gpg.pub" -o gpg.pub
+	@cp /sys/kernel/btf/vmlinux /usr/lib/modules/$(KERNEL_VERSION)/build/
+
 build: test
 	@echo "building"
-	@op run --env-file=".env" -- \
-		in-toto-run --use-dsse --gpg --signing-key GPGKEYID --password GPGPASS\
-			--step-name compile \
-			--materials demo-project/foo.py \
-			--products demo-project/foo.py \
-			--metadata-directory sigs -- echo "helloworld"
 
 test: verify
 	@echo "testing"
@@ -40,10 +40,3 @@ attest:
 	@cosign verify-attestation --policy policy.rego --key cosign.pub gcr.io/rekor-testing/distroless
 
 	# gpg --output doc.sig --detach-sig doc
-
-docker:
-	@docker build --build-arg KERNVER=$(KERNEL_VERSION) -t "eudyptula:task01" .
-	@#docker run --privileged -v "/lib/modules:/lib/modules" "eudyptula:task01"
-	@docker run --rm -it "eudyptula:task01" /usr/bin/env bash
-	@insmod eudyptula.ko
-	@lsmod | grep eudyptula
