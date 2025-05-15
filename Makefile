@@ -13,7 +13,7 @@ clean:
 init:
 	sudo add-apt-repository ppa:longsleep/golang-backports
 	sudo apt-get update
-	sudo apt-get upgrade
+	sudo apt-get upgrade -y
 	sudo apt install -y golang-go python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
 	@pip install in-toto # --break-system-packages
 	@.scripts/install-1pw.sh
@@ -22,7 +22,7 @@ init:
 	@go install github.com/sigstore/cosign/v2/cmd/cosign@latest
 	@op document get --vault linux-kernel "gpg.key" -o gpg.key
 	@op document get --vault linux-kernel "gpg.pub" -o gpg.pub
-	@cp /sys/kernel/btf/vmlinux /usr/lib/modules/$(KERNEL_VERSION)/build/
+	@sudo cp /sys/kernel/btf/vmlinux /usr/lib/modules/$(KERNEL_VERSION)/build/
 
 build: test
 	@echo "building"
