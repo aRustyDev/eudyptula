@@ -24,8 +24,8 @@ build: test
 
 test: verify
 	@echo "testing"
-	@insmod $(MODNAME).ko
-	@lsmod | grep $(MODNAME)
+	@sudo insmod $(MODNAME).ko
+	@sudo lsmod | grep $(MODNAME)
 
 sign:
 	@echo "signing"
