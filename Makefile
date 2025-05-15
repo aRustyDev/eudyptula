@@ -11,8 +11,9 @@ clean:
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
 init:
-	@sudo apt-get update && apt-get upgrade
-	@sudo apt install -y python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
+	sudo apt-get update
+	sudo apt-get upgrade
+	sudo apt install -y python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
 	@pip install in-toto --break-system-packages
 	@.scripts/install-1pw.sh
 	@.scripts/install-docker.sh
