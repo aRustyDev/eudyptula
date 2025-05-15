@@ -2,14 +2,15 @@
 UNAME_R = $(shell uname -r)
 # KERNEL_VERSION = $(if $(UNAME_R), $(shell uname -r | tr -d '[:space:]'), 6.11.0-25-generic)
 KERNEL_VERSION = $(shell uname -r)
-obj-m += helloworld.o
+MODNAME = helloworld
+obj-m += $(MODNAME).o
 
 all:
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
 
 clean:
 	@echo "cleaning"
-	@#rmmod eudyptula.ko
+	@#rmmod $(MODNAME).ko
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
 build: test
@@ -19,12 +20,12 @@ build: test
 			--step-name compile \
 			--materials demo-project/foo.py \
 			--products demo-project/foo.py \
-			--metadata-directory sigs -- echo "helloworld"
+			--metadata-directory sigs -- echo "$(MODNAME)"
 
 test: verify
 	@echo "testing"
-	@insmod eudyptula.ko
-	@lsmod | grep eudyptula
+	@insmod $(MODNAME).ko
+	@lsmod | grep $(MODNAME)
 
 sign:
 	@echo "signing"
