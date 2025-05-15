@@ -20,8 +20,6 @@ init:
 	@.scripts/install-docker.sh
 	@.scripts/update-path.sh
 	@go install github.com/sigstore/cosign/v2/cmd/cosign@latest
-	@op document get --vault linux-kernel "gpg.key" -o gpg.key
-	@op document get --vault linux-kernel "gpg.pub" -o gpg.pub
 	@sudo cp /sys/kernel/btf/vmlinux /usr/lib/modules/$(KERNEL_VERSION)/build/
 
 build: test

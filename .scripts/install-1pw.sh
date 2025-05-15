@@ -5,8 +5,6 @@ if command -v "op" &> /dev/null; then
     if [ $? -ne 0 ]; then
         echo "Need to Auth to OP"
         eval $(op signin)
-    else
-        echo "OP Installed and Authenticated"
     fi
 else
     curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
@@ -20,5 +18,11 @@ else
         curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
         sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg && \
         sudo apt update && sudo apt install 1password-cli
-    eval $(op signin) && echo "OP Installed and Authenticated"
+    eval $(op signin) || exit 1
 fi
+echo "OP Installed and Authenticated"
+op document get --vault linux-kernel "gpg.key" -o gpg.key
+op document get --vault linux-kernel "gpg.pub" -o gpg.pub
+
+# Import GPG Key to keyring
+op run --env-file='.env' -- gpg --batch --passphrase GPGPASS --import gpg.key
