@@ -47,4 +47,4 @@ attest:
 # ----
 
 task01:
-	@make -C $(PWD)/task01/mine
+	@make -C $(PWD)/task01/mine build
