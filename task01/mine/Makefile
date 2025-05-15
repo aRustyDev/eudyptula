@@ -10,7 +10,7 @@ all:
 
 clean:
 	@echo "cleaning"
-	@#rmmod $(MODNAME).ko
+	@rmmod $(MODNAME).ko
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
 build: test
