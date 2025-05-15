@@ -4,7 +4,7 @@ if command -v "op" &> /dev/null; then
     op whoami
     if [ $? -ne 0 ]; then
         echo "Need to Auth to OP"
-        op signin
+        eval $(op signin)
     else
         echo "OP Installed and Authenticated"
     fi
