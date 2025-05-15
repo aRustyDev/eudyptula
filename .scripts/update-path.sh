@@ -8,7 +8,7 @@ if [ $? -ne 0 ]; then
 echo <<EOF >> ~/.bashrc
 # BEGIN SET BY EUDYPTULA
 PATHS=("/usr/local/go/bin" "$HOME/.local/bin" "/opt/google-cloud-sdk/bin")
-delimiter=","
+delimiter=":"
 IFS="$delimiter"
 JOINED_PATHS="${PATHS[*]}"
 
@@ -21,4 +21,7 @@ done
 PATH=$PATH:$JOINED_PATHS
 # END SET BY EUDYPTULA
 EOF
+    echo "~/.bashrc updated successfully"
+else
+    echo "~/.bashrc already updated"
 fi
