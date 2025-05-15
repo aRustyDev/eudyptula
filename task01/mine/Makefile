@@ -48,7 +48,4 @@ attest:
 
 docker:
 	@docker build --build-arg KERNVER=$(KERNEL_VERSION) -t "eudyptula:task01" .
-	@#docker run --privileged -v "/lib/modules:/lib/modules" "eudyptula:task01"
 	@docker run --rm -it "eudyptula:task01" /usr/bin/env bash
-	@insmod eudyptula.ko
-	@lsmod | grep eudyptula
