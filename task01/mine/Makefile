@@ -35,7 +35,7 @@ verify:
 
 attest:
 	@echo "attesting"
-	@./.scripts/in-toto-run/build.sh
+	@./.scripts/in-toto-run/build.sh $(MODNAME)
 	@#cosign attest --key cosign.key -predicate foo gcr.io/rekor-testing/distroless
 	@#cosign verify-attestation --key cosign.pub gcr.io/rekor-testing/distroless | jq -r .payload | base64 -D | jq .
 	@#cosign verify-attestation --policy policy.rego --key cosign.pub gcr.io/rekor-testing/distroless
