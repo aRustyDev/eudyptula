@@ -13,11 +13,11 @@ clean:
 init:
 	sudo apt-get update
 	sudo apt-get upgrade
-	sudo apt install -y python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
+	sudo apt install -y golang python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
 	@pip install in-toto # --break-system-packages
-	@.scripts/install-1pw.sh
-	@.scripts/install-docker.sh
-	@.scripts/install-go.sh
+	@$(shell $(if $(shell which op), "echo 'op already installed'", ".scripts/install-1pw.sh"))
+	@$(shell $(if $(shell which docker), "echo 'docker already installed'", ".scripts/install-docker.sh"))
+	@$(shell $(if $(shell which go), "echo 'go already installed'", ".scripts/install-go.sh"))
 	@go install github.com/sigstore/cosign/v2/cmd/cosign@latest
 	@op document get --vault linux-kernel "gpg.key" -o gpg.key
 	@op document get --vault linux-kernel "gpg.pub" -o gpg.pub
