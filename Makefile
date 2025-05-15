@@ -11,9 +11,10 @@ clean:
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
 init:
+	sudo add-apt-repository ppa:longsleep/golang-backports
 	sudo apt-get update
 	sudo apt-get upgrade
-	sudo apt install -y golang python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
+	sudo apt install -y golang-go python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
 	@pip install in-toto # --break-system-packages
 	@.scripts/install-1pw.sh
 	@.scripts/install-docker.sh

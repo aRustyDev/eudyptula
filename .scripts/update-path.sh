@@ -21,7 +21,9 @@ done
 PATH=$PATH:$JOINED_PATHS
 # END SET BY EUDYPTULA
 EOF
+    source ~/.bashrc
     echo "~/.bashrc updated successfully"
 else
+    source ~/.bashrc
     echo "~/.bashrc already updated"
 fi
