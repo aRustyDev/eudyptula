@@ -1,6 +1,7 @@
 .PHONY = all clean build test
 UNAME_R = $(shell uname -r)
-KERNEL_VERSION = $(if $(UNAME_R), $(shell uname -r | tr -d '[:space:]'), 6.11.0-25-generic)
+# KERNEL_VERSION = $(if $(UNAME_R), $(shell uname -r | tr -d '[:space:]'), 6.11.0-25-generic)
+KERNEL_VERSION = $(shell uname -r)
 APT_PKGS = python3-pip make kmod dwarves gcc linux-headers-$(KERNEL_VERSION)
 
 all: init clean
