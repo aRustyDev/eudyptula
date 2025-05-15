@@ -13,14 +13,9 @@ clean:
 	@sudo rmmod $(MODNAME).ko
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
-build: test
+build:
 	@echo "building"
-	@op run --env-file=".env" -- \
-		in-toto-run --use-dsse --gpg --signing-key GPGKEYID --password GPGPASS\
-			--step-name compile \
-			--materials demo-project/foo.py \
-			--products demo-project/foo.py \
-			--metadata-directory sigs -- echo "$(MODNAME)"
+	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
 
 test: verify
 	@echo "testing"
@@ -40,9 +35,16 @@ verify:
 
 attest:
 	@echo "attesting"
-	@cosign attest --key cosign.key -predicate foo gcr.io/rekor-testing/distroless
-	@cosign verify-attestation --key cosign.pub gcr.io/rekor-testing/distroless | jq -r .payload | base64 -D | jq .
-	@cosign verify-attestation --policy policy.rego --key cosign.pub gcr.io/rekor-testing/distroless
+	@op run --env-file=".env" -- \
+		in-toto-run --use-dsse --gpg --signing-key GPGKEYID --password GPGPASS\
+			--step-name compile \
+			--materials $(MODNAME).c policy.rego Makefile \
+			--products $(MODNAME).ko $(MODNAME).mo* $(MODNAME).o modules.order Module.symvers ./*.cmd \
+			--metadata-directory sigs -- make build
+	@#cosign attest --key cosign.key -predicate foo gcr.io/rekor-testing/distroless
+	@#cosign verify-attestation --key cosign.pub gcr.io/rekor-testing/distroless | jq -r .payload | base64 -D | jq .
+	@#cosign verify-attestation --policy policy.rego --key cosign.pub gcr.io/rekor-testing/distroless
+	@make clean
 
 	# gpg --output doc.sig --detach-sig doc
 

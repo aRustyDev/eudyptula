@@ -1,4 +1,4 @@
-.PHONY = all clean build test
+.PHONY = all clean build test task01
 UNAME_R = $(shell uname -r)
 # KERNEL_VERSION = $(if $(UNAME_R), $(shell uname -r | tr -d '[:space:]'), 6.11.0-25-generic)
 KERNEL_VERSION = $(shell uname -r)
@@ -43,3 +43,8 @@ attest:
 	@cosign verify-attestation --policy policy.rego --key cosign.pub gcr.io/rekor-testing/distroless
 
 	# gpg --output doc.sig --detach-sig doc
+
+# ----
+
+task01:
+	@make -C $(PWD)/task01/mine
