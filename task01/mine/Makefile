@@ -9,6 +9,7 @@ all:
 
 clean:
 	@echo "cleaning"
+	@rmmod eudyptula.ko
 	@make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) clean
 
 build: test
@@ -22,6 +23,8 @@ build: test
 
 test: verify
 	@echo "testing"
+	@insmod eudyptula.ko
+	@lsmod | grep eudyptula
 
 sign:
 	@echo "signing"

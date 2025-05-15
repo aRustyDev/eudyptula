@@ -25,4 +25,4 @@ module_exit(goodbye);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("aRustyDev");
-MODULE_DESCRIPTION("Helloworld");
+MODULE_DESCRIPTION("Helloworldone");
