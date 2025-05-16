@@ -22,3 +22,5 @@ op document get --vault linux-kernel "gpg.pub" -o gpg.pub
 
 # Import GPG Key to keyring
 op run --env-file='.env' -- gpg --batch --passphrase GPGPASS --import gpg.key
+rm gpg.key gpg.pub
+op run --env-file='.env' -- echo "default-key GPGKEYID" > ~/.gnupg/gpg.conf
